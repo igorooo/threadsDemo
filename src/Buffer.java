@@ -1,14 +1,22 @@
 import java.util.ArrayList;
 
 public class Buffer implements Put,Remove{
-    private static final int BOUND = 10;
+    private static final int BOUND = 1000;
+    private static final boolean ENABLE_PRINTS = false;
 
     private ArrayList<Integer> mBuffer;
+
     private boolean taskDone;
 
     public Buffer(){
         mBuffer = new ArrayList<>();
         taskDone = false;
+    }
+
+    public void printBuffer(){
+        for(Integer elem: mBuffer){
+            System.out.print(elem + " ");
+        }
     }
 
     private void removeDuplicates(){
@@ -28,7 +36,9 @@ public class Buffer implements Put,Remove{
             }
 
             else{
-                System.out.println("Removing: " + e);
+                if(ENABLE_PRINTS){
+                    System.out.println("Removing: " + e);
+                }
             }
         }
         mBuffer = tempList;
@@ -44,11 +54,28 @@ public class Buffer implements Put,Remove{
             return true;
         }
 
-        else{
-            System.out.println("Putting: " + val);
-            mBuffer.add(val);
-            return false;
+        while (getSize() >= BOUND){
+
+            try{
+                wait();
+            }
+            catch (InterruptedException e){
+                Thread.currentThread().interrupt();
+                System.out.println("Thread interrupted "+Thread.currentThread().getName());
+            }
+
+            if(taskDone){
+                return true;
+            }
         }
+
+        if(getSize() < BOUND){
+            if(ENABLE_PRINTS){
+                System.out.println("Putting: " + val);
+            }
+            mBuffer.add(val);
+        }
+        return false;
     }
 
     @Override
@@ -61,15 +88,16 @@ public class Buffer implements Put,Remove{
         if(taskDone){
             return true;
         }
-
         removeDuplicates();
 
-        if(mBuffer.size() < BOUND){
+        if(getSize() < BOUND){
+            notifyAll();
             return false;
         }
 
         else{
             System.out.println("Task done!");
+            printBuffer();
             taskDone = true;
             return true;
         }

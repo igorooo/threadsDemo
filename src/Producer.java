@@ -1,7 +1,7 @@
 import java.util.Random;
 
 public class Producer implements Runnable {
-    private static final int MAX_INT = 100;
+    private static final int MAX_INT = 1000000;
 
     private Put buffer;
     private Random mGenerator;

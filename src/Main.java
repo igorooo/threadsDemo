@@ -8,7 +8,6 @@ public class Main {
         if( n > 9){
             m = (int)Math.round(n * 0.1);
         }
-
         else{
             m = 1;
         }
@@ -17,7 +16,7 @@ public class Main {
 
     public static void main(String args[]){
 
-        int amount = 50, treshold;
+        int amount = 500, treshold;
         treshold = getTreshold(amount);
         ArrayList<Runnable> runnables = new ArrayList<>();
         ArrayList<Thread> threads = new ArrayList<>();
