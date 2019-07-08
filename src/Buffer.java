@@ -1,12 +1,13 @@
 import java.util.ArrayList;
 
 public class Buffer implements Put,Remove{
-    private static final int BOUND = 1000;
+    private static final int BOUND = 100000;
     private static final boolean ENABLE_PRINTS = false;
 
     private ArrayList<Integer> mBuffer;
 
     private boolean taskDone;
+
 
     public Buffer(){
         mBuffer = new ArrayList<>();
@@ -56,6 +57,8 @@ public class Buffer implements Put,Remove{
 
         while (getSize() >= BOUND){
 
+
+
             try{
                 wait();
             }
@@ -97,8 +100,11 @@ public class Buffer implements Put,Remove{
 
         else{
             System.out.println("Task done!");
-            printBuffer();
+            if(ENABLE_PRINTS){
+                printBuffer();
+            }
             taskDone = true;
+            notifyAll();
             return true;
         }
     }

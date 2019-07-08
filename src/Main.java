@@ -16,7 +16,7 @@ public class Main {
 
     public static void main(String args[]){
 
-        int amount = 500, treshold;
+        int amount = 100, treshold;
         treshold = getTreshold(amount);
         ArrayList<Runnable> runnables = new ArrayList<>();
         ArrayList<Thread> threads = new ArrayList<>();
@@ -47,7 +47,7 @@ public class Main {
             }
         }
         catch (InterruptedException e){
-            System.out.println("InterruptedException in main doing thread.join()");
+            System.out.println("InterruptedException in main doing thread.join(): ");
             e.printStackTrace();
         }
 

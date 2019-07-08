@@ -29,11 +29,6 @@ public class Producer implements Runnable {
             if(isPalindrome(n)){
                 isDone = buffer.put(n);
             }
-
-            // to avoid not necessary activity
-            else{
-                isDone = buffer.isDone();
-            }
         }
     }
 }
