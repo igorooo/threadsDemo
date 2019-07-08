@@ -5,13 +5,11 @@ public class Buffer implements Put,Remove{
     private static final boolean ENABLE_PRINTS = false;
 
     private ArrayList<Integer> mBuffer;
-
-    private boolean taskDone;
-
+    private boolean mTaskDone;
 
     public Buffer(){
         mBuffer = new ArrayList<>();
-        taskDone = false;
+        mTaskDone = false;
     }
 
     public void printBuffer(){
@@ -51,7 +49,7 @@ public class Buffer implements Put,Remove{
 
     @Override
     public synchronized boolean put(int val) {
-        if(taskDone){
+        if(mTaskDone){
             return true;
         }
 
@@ -65,23 +63,21 @@ public class Buffer implements Put,Remove{
                 System.out.println("Thread interrupted "+Thread.currentThread().getName());
             }
 
-            if(taskDone){
+            if(mTaskDone){
                 return true;
             }
         }
 
-        if(getSize() < BOUND){
-            if(ENABLE_PRINTS){
-                System.out.println("Putting: " + val);
-            }
-            mBuffer.add(val);
+        if(ENABLE_PRINTS){
+            System.out.println("Putting: " + val);
         }
+        mBuffer.add(val);
         return false;
     }
 
     @Override
     public boolean isDone() {
-        return taskDone;
+        return mTaskDone;
     }
 
     @Override
@@ -96,7 +92,7 @@ public class Buffer implements Put,Remove{
                 System.out.println("Thread interrupted "+Thread.currentThread().getName());
             }
         }
-        if(taskDone){
+        if(mTaskDone){
             return true;
         }
         removeDuplicates();
@@ -106,7 +102,7 @@ public class Buffer implements Put,Remove{
             if(ENABLE_PRINTS){
                 printBuffer();
             }
-            taskDone = true;
+            mTaskDone = true;
             notifyAll();
             return true;
         }

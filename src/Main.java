@@ -1,4 +1,6 @@
 import java.sql.Time;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -15,6 +17,12 @@ public class Main {
         return m;
     }
 
+    public static void getCurrentTime(){
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println(dtf.format(now));
+    }
+
     public static void main(String args[]){
 
         int amount = 100, treshold;
@@ -23,6 +31,7 @@ public class Main {
         ArrayList<Thread> threads = new ArrayList<>();
         Buffer buffer = new Buffer();
 
+        //Creating and adding new producer and consumer threads
         for(int i = 0; i < amount; i++){
             if(i >= treshold){
                 runnables.add(new Producer(buffer));
@@ -36,6 +45,9 @@ public class Main {
         for(Runnable elem : runnables){
             threads.add(new Thread(elem));
         }
+
+        //Starting
+        getCurrentTime();
 
         for(Thread thread : threads){
             thread.start();
@@ -53,6 +65,8 @@ public class Main {
         }
 
         System.out.println("Job finished, size of buffer: "+buffer.getSize());
+        getCurrentTime();
+        //finished
 
     }
 }
