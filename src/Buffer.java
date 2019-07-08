@@ -56,9 +56,7 @@ public class Buffer implements Put,Remove{
         }
 
         while (getSize() >= BOUND){
-
-
-
+            notifyAll();
             try{
                 wait();
             }
@@ -88,17 +86,22 @@ public class Buffer implements Put,Remove{
 
     @Override
     public synchronized boolean remove() {
+        while(getSize() < BOUND){
+            notifyAll();
+            try{
+                wait();
+            }
+            catch (InterruptedException e){
+                Thread.currentThread().interrupt();
+                System.out.println("Thread interrupted "+Thread.currentThread().getName());
+            }
+        }
         if(taskDone){
             return true;
         }
         removeDuplicates();
 
-        if(getSize() < BOUND){
-            notifyAll();
-            return false;
-        }
-
-        else{
+        if(getSize() >= BOUND){
             System.out.println("Task done!");
             if(ENABLE_PRINTS){
                 printBuffer();
@@ -106,6 +109,10 @@ public class Buffer implements Put,Remove{
             taskDone = true;
             notifyAll();
             return true;
+        }
+
+        else{
+            return false;
         }
     }
 }
