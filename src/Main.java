@@ -6,6 +6,12 @@ import java.util.HashMap;
 
 public class Main {
 
+    private static int NUM_OF_THREADS = 100;
+
+    /**
+     *  Returns number of consumer threads
+     *  (~10% of all threads)
+     */
     public static int getTreshold(int n){
         int m;
         if( n > 9){
@@ -25,15 +31,14 @@ public class Main {
 
     public static void main(String args[]){
 
-        int amount = 100, treshold;
-        treshold = getTreshold(amount);
+        int numOfCons = getTreshold(NUM_OF_THREADS);
         ArrayList<Runnable> runnables = new ArrayList<>();
         ArrayList<Thread> threads = new ArrayList<>();
         Buffer buffer = new Buffer();
 
         //Creating and adding new producer and consumer threads
-        for(int i = 0; i < amount; i++){
-            if(i >= treshold){
+        for(int i = 0; i < NUM_OF_THREADS; i++){
+            if(i >= numOfCons){
                 runnables.add(new Producer(buffer));
             }
 

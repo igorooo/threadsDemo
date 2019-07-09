@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 
 public class Buffer implements Put,Remove{
+    //  BOUND = size of final array
     private static final int BOUND = 100000;
     private static final boolean ENABLE_PRINTS = false;
 
